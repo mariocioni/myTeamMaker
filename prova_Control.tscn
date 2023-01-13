@@ -1,0 +1,48 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+
+var items = [\"Item 1\", \"Item 2\", \"Item 3\"]
+var selected_items = []
+
+func _ready():
+#	var vbox = VBoxContainer.new()
+	add_child($vbox)	
+	for item in items:
+		var check_button = CheckButton.new()
+		check_button.text = item
+		check_button.connect(\"toggled\", self, \"_on_item_toggled\", [item])
+		$vbox.add_child(check_button)
+	
+func _on_item_toggled(item, value):
+	if item:
+		selected_items.append(value)
+	else:
+		selected_items.erase(value)
+	print(\"Selected items:\", selected_items)
+
+
+func _on_CheckButton_toggled(button_pressed):
+#	var tmp=button_pressed.text
+	selected_items.append(String(button_pressed)) # Replace with function body.
+"
+
+[node name="Control" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = SubResource( 1 )
+
+[node name="vbox" type="VBoxContainer" parent="."]
+margin_right = 663.0
+margin_bottom = 408.0
+
+[node name="troiaio" type="CheckButton" parent="vbox"]
+visible = false
+margin_right = 663.0
+margin_bottom = 40.0
+text = "prova"
+align = 1
+
+[connection signal="toggled" from="vbox/troiaio" to="." method="_on_CheckButton_toggled"]
